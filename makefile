@@ -6,7 +6,7 @@
 
 CC=gcc
 CFLAGS= -Wall -Wextra
-OBJECTS= help_mem.o
+OBJECTS= alloc_mem.o display_mem.o free_mem.o help_mem.o invert_mem.o verify_pattern.o write_mem.o write_pattern.o
 
 %.o: %.c %.h
 	$(CC) -c -o $@ $< $(CFLAGS)

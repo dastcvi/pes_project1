@@ -1,4 +1,4 @@
-/* File:     help.c
+/* File:     help_mem.c
  * Author:   Alex St. Clair
  * Created:  9-24-2018
  *
@@ -10,5 +10,5 @@
 
 void help_mem(void)
 {
-	printf("help\n");
+	printf("help_mem\n");
 }
