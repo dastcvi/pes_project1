@@ -12,6 +12,7 @@
 //    * exit (not required)
 
 #include <stdio.h>
+#include <string.h>
 #include "alloc_mem.h"
 #include "display_mem.h"
 #include "free_mem.h"
@@ -21,16 +22,47 @@
 #include "write_mem.h"
 #include "write_pattern.h"
 
+void print_welcome(void)
+{
+	printf("\n----------------------------------------------------\n");
+	printf("Welcome to MemManip, the memory manipulation program\n");
+	printf("Author:  Alex St. Clair\n");
+	printf("Created: 9-24-2018\n\n");
+	printf("Enter \"help\" to see a command directory\n");
+	printf("----------------------------------------------------\n\n");
+}
+
+int handle_selection(void)
+{
+	// statically allocate a buffer for user input
+	static char user_input[16] = {0};
+
+	printf("\nEnter a command: ");
+	scanf("%15s", user_input);
+	fflush(stdout);
+
+	if (0 == strcmp(user_input, "help"))
+	{
+		help_mem();
+	}
+	else if (0 == strcmp(user_input, "exit"))
+	{
+		printf("Thank you\n\n");
+		return 0;
+	}
+	else
+	{
+		printf("Unknown command \"%s\": try \"help\" for a command directory\n", user_input);
+	}
+
+	return 1;
+}
+
 int main()
 {
-	printf("Welcome\n");
-	alloc_mem();
-	display_mem();
-	free_mem();
-	help_mem();
-	invert_mem();
-	verify_pattern();
-	write_mem();
-	write_pattern();
+	print_welcome();
+	
+	while (handle_selection());
+
 	return 1;
 }
