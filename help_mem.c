@@ -10,5 +10,10 @@
 
 void help_mem(void)
 {
-	printf("help_mem\n");
+	printf("\n----------------------------------------------------\n");
+	printf("-                Command Directory                 -\n");
+	printf("----------------------------------------------------\n");
+	printf(" help - displays command directory\n");
+	printf(" exit - exits the program\n");
+	printf("----------------------------------------------------\n\n");
 }
