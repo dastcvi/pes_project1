@@ -40,7 +40,7 @@ void write_mem(uint32_t ** start_mem, uint32_t ** end_mem, const bool * alloc_st
 
 	mem_pointer = (uint32_t *) address;
 
-	if (1 != sscanf(value_arg, "%d", &value))
+	if (1 != sscanf(value_arg, "%x", &value))
 	{
 		printf("Invalid value: %s\n", value_arg);
 		return;
@@ -48,5 +48,5 @@ void write_mem(uint32_t ** start_mem, uint32_t ** end_mem, const bool * alloc_st
 
 	*mem_pointer = value;
 
-	printf("Wrote %d to %#lx\n", value, (long unsigned int) mem_pointer);
+	printf("Wrote %x to %#lx\n", value, (long unsigned int) mem_pointer);
 }

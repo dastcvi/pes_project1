@@ -105,7 +105,7 @@ int handle_selection(void)
 	}
 	else if (0 == strcmp(args[0], "invert"))
 	{
-		invert_mem();
+		invert_mem(&mem_start, &mem_end, &alloc_status, args[1], args[2]);
 	}
 	else if (0 == strcmp(args[0], "pattern"))
 	{

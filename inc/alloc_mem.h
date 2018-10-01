@@ -11,7 +11,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define MAX_ALLOC_WORDS		1024
+#define MAX_ALLOC_WORDS		1048576
 
 void alloc_mem(uint32_t ** mem_start, uint32_t ** mem_end, bool * alloc_status, const char num_words[16]);
 

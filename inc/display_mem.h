@@ -10,7 +10,7 @@
 
 #include <stdint.h>
 
-#define MAX_DISPLAY_WORDS	1024
+#define MAX_DISPLAY_WORDS	1048576
 
 void display_mem(const char address_arg[16], const char num_words_arg[16]);
 
