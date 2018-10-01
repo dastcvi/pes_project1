@@ -27,14 +27,11 @@ void print_welcome(void)
 	printf("----------------------------------------------------\n\n");
 }
 
-int handle_selection(void)
+void get_args(char args[3][16])
 {
-	char args[3][16] = {0};
 	char new_char = 0;
 	uint8_t arg_num = 0;
 	uint8_t char_num = 0;
-
-	printf("\nEnter a command: ");
 
 	/* read up to three arguments from the command line */
 	while ('\n' != (new_char = getchar()))
@@ -62,11 +59,48 @@ int handle_selection(void)
 	{
 		new_char = getchar();
 	}
+}
+
+int handle_selection(void)
+{
+	char args[3][16] = {0};
+
+	printf("\nEnter a command: ");
+
+	get_args(args);
 
 	/* handle command */
 	if (0 == strcmp(args[0], "help"))
 	{
 		help_mem();
+	}
+	else if (0 == strcmp(args[0], "alloc"))
+	{
+		alloc_mem();
+	}
+	else if (0 == strcmp(args[0], "free"))
+	{
+		free_mem();
+	}
+	else if (0 == strcmp(args[0], "display"))
+	{
+		display_mem();
+	}
+	else if (0 == strcmp(args[0], "write"))
+	{
+		write_mem();
+	}
+	else if (0 == strcmp(args[0], "invert"))
+	{
+		invert_mem();
+	}
+	else if (0 == strcmp(args[0], "pattern"))
+	{
+		write_pattern();
+	}
+	else if (0 == strcmp(args[0], "verify"))
+	{
+		verify_pattern();
 	}
 	else if (0 == strcmp(args[0], "exit"))
 	{
