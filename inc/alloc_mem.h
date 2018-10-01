@@ -13,6 +13,6 @@
 
 #define MAX_ALLOC_WORDS		1024
 
-void alloc_mem(uint32_t ** mem_pointer, bool * alloc_status, const char num_words[16]);
+void alloc_mem(uint32_t ** mem_start, uint32_t ** mem_end, bool * alloc_status, const char num_words[16]);
 
 #endif /* __ALLOC_MEM_H_ */

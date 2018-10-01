@@ -18,9 +18,16 @@
 #include "../inc/write_mem.h"
 #include "../inc/write_pattern.h"
 
-uint32_t * mem_pointer = NULL;
+/* pointer to the first valid uint32_t address */
+uint32_t * mem_start = NULL;
+
+/* pointer to the last valid uint32_t address */
+uint32_t * mem_end = NULL;
+
+/* shows whether memory is currently allocated or not */
 bool alloc_status = false;
 
+/* show a welcome message */
 void print_welcome(void)
 {
 	printf("\n----------------------------------------------------\n");
@@ -31,6 +38,7 @@ void print_welcome(void)
 	printf("----------------------------------------------------\n\n");
 }
 
+/* read up to three arguments from the command line into the argument buffer */
 void get_args(char args[3][16])
 {
 	char new_char = 0;
@@ -45,7 +53,7 @@ void get_args(char args[3][16])
 		{
 			char_num = 0;
 
-			/* ensure there aren't more than three arguments */
+			/* don't handle arguments past three */
 			if (++arg_num == 3) break;
 		}
 		else
@@ -65,6 +73,7 @@ void get_args(char args[3][16])
 	}
 }
 
+/* wait for and handle user input */
 int handle_selection(void)
 {
 	char args[3][16] = {0};
@@ -80,19 +89,19 @@ int handle_selection(void)
 	}
 	else if (0 == strcmp(args[0], "alloc"))
 	{
-		alloc_mem(&mem_pointer, &alloc_status, args[1]);
+		alloc_mem(&mem_start, &mem_end, &alloc_status, args[1]);
 	}
 	else if (0 == strcmp(args[0], "free"))
 	{
-		free_mem(&mem_pointer, &alloc_status);
+		free_mem(&mem_start, &alloc_status);
 	}
 	else if (0 == strcmp(args[0], "display"))
 	{
-		display_mem();
+		display_mem(args[1], args[2]);
 	}
 	else if (0 == strcmp(args[0], "write"))
 	{
-		write_mem();
+		write_mem(&mem_start, &mem_end, &alloc_status, args[1], args[2]);
 	}
 	else if (0 == strcmp(args[0], "invert"))
 	{
@@ -121,12 +130,6 @@ int handle_selection(void)
 
 int main()
 {
-	printf("Void *: %lu\n", sizeof(void *));
-	printf("Int: %lu\n", sizeof(int));
-	printf("UInt: %lu\n", sizeof(unsigned int));
-	printf("LInt: %lu\n", sizeof(long int));
-	printf("LUInt: %lu\n", sizeof(long unsigned int));
-
 	print_welcome();
 	
 	while (handle_selection());

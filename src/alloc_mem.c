@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include "../inc/alloc_mem.h"
 
-void alloc_mem(uint32_t ** mem_pointer, bool * alloc_status, const char num_words[16])
+void alloc_mem(uint32_t ** mem_start, uint32_t ** mem_end, bool * alloc_status, const char num_words[16])
 {
 	int alloc_size = 0;
 
@@ -31,12 +31,14 @@ void alloc_mem(uint32_t ** mem_pointer, bool * alloc_status, const char num_word
 		return;
 	}
 
-	*mem_pointer = (uint32_t *) malloc(alloc_size*4);
+	*mem_start = (uint32_t *) malloc(alloc_size*4);
+	*mem_end = &((*mem_start)[alloc_size-1]);
 
-	if (*mem_pointer != NULL)
+	if (*mem_start != NULL)
 	{
 		*alloc_status = true;
-		printf("Allocated %d words at address %#lx\n", alloc_size, (long unsigned int) *mem_pointer);
+		printf("Allocated %d words at address %#lx\n", alloc_size, (long unsigned int) *mem_start);
+		printf("The highest valid write address is %#lx\n", (long unsigned int) *mem_end);
 	}
 	else
 	{
