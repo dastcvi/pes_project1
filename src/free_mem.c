@@ -6,7 +6,7 @@
  */
 
 #include <stdio.h>
-#include "free_mem.h"
+#include "../inc/free_mem.h"
 
 void free_mem(void)
 {

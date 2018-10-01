@@ -6,7 +6,7 @@
  */
 
 #include <stdio.h>
-#include "help_mem.h"
+#include "../inc/help_mem.h"
 
 void help_mem(void)
 {

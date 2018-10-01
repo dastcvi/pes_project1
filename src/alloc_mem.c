@@ -6,7 +6,7 @@
  */
 
 #include <stdio.h>
-#include "alloc_mem.h"
+#include "../inc/alloc_mem.h"
 
 void alloc_mem(void)
 {

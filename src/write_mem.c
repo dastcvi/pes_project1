@@ -6,7 +6,7 @@
  */
 
 #include <stdio.h>
-#include "write_mem.h"
+#include "../inc/write_mem.h"
 
 void write_mem(void)
 {

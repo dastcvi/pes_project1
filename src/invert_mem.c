@@ -6,7 +6,7 @@
  */
 
 #include <stdio.h>
-#include "invert_mem.h"
+#include "../inc/invert_mem.h"
 
 void invert_mem(void)
 {

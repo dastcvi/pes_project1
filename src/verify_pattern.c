@@ -6,7 +6,7 @@
  */
 
 #include <stdio.h>
-#include "verify_pattern.h"
+#include "../inc/verify_pattern.h"
 
 void verify_pattern(void)
 {

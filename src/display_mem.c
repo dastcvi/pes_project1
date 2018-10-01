@@ -6,7 +6,7 @@
  */
 
 #include <stdio.h>
-#include "display_mem.h"
+#include "../inc/display_mem.h"
 
 void display_mem(void)
 {

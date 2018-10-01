@@ -6,7 +6,7 @@
  */
 
 #include <stdio.h>
-#include "write_pattern.h"
+#include "../inc/write_pattern.h"
 
 void write_pattern(void)
 {

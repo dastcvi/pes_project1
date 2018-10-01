@@ -8,7 +8,7 @@ CC=gcc
 CFLAGS= -Wall -Wextra
 OBJECTS= alloc_mem.o display_mem.o free_mem.o help_mem.o invert_mem.o verify_pattern.o write_mem.o write_pattern.o
 
-%.o: %.c %.h
+%.o: %.c ../inc/%.h
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 mem_manip: main.c $(OBJECTS)
