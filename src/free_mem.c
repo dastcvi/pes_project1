@@ -6,9 +6,28 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "../inc/free_mem.h"
 
-void free_mem(void)
+void free_mem(uint32_t ** mem_pointer, bool * alloc_status)
 {
-	printf("free_mem\n");
+	long unsigned int address = 0;
+
+	if (!*alloc_status)
+	{
+		printf("No allocated memory to free\n");
+		return;
+	}
+
+	if (*mem_pointer == NULL)
+	{
+		printf("Error: NULL global memory pointer\n");
+		return;
+	}
+
+	address = (long unsigned int) *mem_pointer;
+	free(*mem_pointer);
+	*alloc_status = false;
+
+	printf("Freed previously allocated memory at %#lx\n", address);
 }

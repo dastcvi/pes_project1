@@ -8,6 +8,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 #include "../inc/alloc_mem.h"
 #include "../inc/display_mem.h"
 #include "../inc/free_mem.h"
@@ -16,6 +17,9 @@
 #include "../inc/verify_pattern.h"
 #include "../inc/write_mem.h"
 #include "../inc/write_pattern.h"
+
+uint32_t * mem_pointer = NULL;
+bool alloc_status = false;
 
 void print_welcome(void)
 {
@@ -76,11 +80,11 @@ int handle_selection(void)
 	}
 	else if (0 == strcmp(args[0], "alloc"))
 	{
-		alloc_mem();
+		alloc_mem(&mem_pointer, &alloc_status, args[1]);
 	}
 	else if (0 == strcmp(args[0], "free"))
 	{
-		free_mem();
+		free_mem(&mem_pointer, &alloc_status);
 	}
 	else if (0 == strcmp(args[0], "display"))
 	{
@@ -117,6 +121,12 @@ int handle_selection(void)
 
 int main()
 {
+	printf("Void *: %lu\n", sizeof(void *));
+	printf("Int: %lu\n", sizeof(int));
+	printf("UInt: %lu\n", sizeof(unsigned int));
+	printf("LInt: %lu\n", sizeof(long int));
+	printf("LUInt: %lu\n", sizeof(long unsigned int));
+
 	print_welcome();
 	
 	while (handle_selection());
