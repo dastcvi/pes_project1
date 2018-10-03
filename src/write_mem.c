@@ -26,6 +26,10 @@ void write_mem(uint32_t ** start_mem, uint32_t ** end_mem, const bool * alloc_st
 		return;
 	}
 
+	if (address == 0xffffffff) {
+		address = (unsigned long int) *start_mem;
+	}
+	
 	if (address < (long unsigned int) *start_mem || address > (long unsigned int) *end_mem)
 	{
 		printf("The write address must be within %#lx - %#lx\n", (long unsigned int) *start_mem, (long unsigned int) *end_mem);

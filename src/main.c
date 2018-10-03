@@ -70,10 +70,10 @@ void get_args(char args[4][16])
 	}
 	
 	/* clear stdin */
-	while (new_char != '\n')
-	{
-		new_char = getchar();
-	}
+	// while (new_char != '\n')
+	// {
+	// 	new_char = getchar();
+	// }
 }
 
 /* wait for and handle user input */
@@ -84,29 +84,6 @@ int handle_selection(void)
 	printf("\nEnter a command: ");
 
 	get_args(args);
-
-
-/* to avoid if-else if-else block:
-
-struct {
-	char command[12];
-	function pointer
-}
-
- * Need to standardize function prototype
-
- cmd(args[4][16], **memstart, **memend, *alloc_status)
-
- * Create array of structs to iterate through:
-
-for (i in array of structs) {
-	if (strcmp) -> call
-}
-
-printf("error, unrecognized")
-
- */
-
 
 	/* handle command */
 	if (0 == strcmp(args[0], "help"))
@@ -123,7 +100,7 @@ printf("error, unrecognized")
 	}
 	else if (0 == strcmp(args[0], "display"))
 	{
-		display_mem(args[1], args[2]);
+		display_mem(&mem_start, args[1], args[2]);
 	}
 	else if (0 == strcmp(args[0], "write"))
 	{

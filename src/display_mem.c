@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include "../inc/display_mem.h"
 
-void display_mem(const char address_arg[16], const char num_words_arg[16])
+void display_mem(uint32_t ** start_mem, const char address_arg[16], const char num_words_arg[16])
 {
 	long unsigned int address = 0;
 	uint32_t * mem_pointer = NULL;
@@ -20,6 +20,10 @@ void display_mem(const char address_arg[16], const char num_words_arg[16])
 		return;
 	}
 
+	if (address == 0xffffffff) {
+		address = (unsigned long int) *start_mem;
+	}
+	
 	mem_pointer = (uint32_t *) address;
 
 	if (1 != sscanf(num_words_arg, "%d", &num_words))

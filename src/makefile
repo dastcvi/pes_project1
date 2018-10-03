@@ -14,6 +14,9 @@ OBJECTS= alloc_mem.o display_mem.o free_mem.o help_mem.o invert_mem.o verify_pat
 mem_manip: main.c $(OBJECTS)
 	$(CC) -o mem_manip main.c $(OBJECTS) $(CFLAGS)
 
+test: mem_manip
+	./mem_manip < testscript.txt
+
 clean:
 	rm mem_manip
 	rm *.o
