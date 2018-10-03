@@ -64,7 +64,6 @@ void invert_mem(uint32_t ** start_mem, uint32_t ** end_mem, const bool * alloc_s
 	}
 	
 	gettimeofday(&end,NULL);
-
 	unsigned long int micros_elapsed = 1000000 * end.tv_sec + end.tv_usec - (1000000 * start.tv_sec + start.tv_usec);
 
 	printf("Inverted memory from %#lx to %#lx in %lu us\n", address, address + 4*(num_words-1), micros_elapsed);

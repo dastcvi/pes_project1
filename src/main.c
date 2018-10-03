@@ -27,6 +27,9 @@ uint32_t * mem_end = NULL;
 /* shows whether memory is currently allocated or not */
 bool alloc_status = false;
 
+/* stores the current seed in memory */
+uint32_t seed = 0;
+
 /* show a welcome message */
 void print_welcome(void)
 {
@@ -39,7 +42,7 @@ void print_welcome(void)
 }
 
 /* read up to three arguments from the command line into the argument buffer */
-void get_args(char args[3][16])
+void get_args(char args[4][16])
 {
 	char new_char = 0;
 	uint8_t arg_num = 0;
@@ -53,8 +56,8 @@ void get_args(char args[3][16])
 		{
 			char_num = 0;
 
-			/* don't handle arguments past three */
-			if (++arg_num == 3) break;
+			/* don't handle arguments past four */
+			if (++arg_num == 4) break;
 		}
 		else
 		{
@@ -76,11 +79,34 @@ void get_args(char args[3][16])
 /* wait for and handle user input */
 int handle_selection(void)
 {
-	char args[3][16] = {0};
+	char args[4][16] = {0};
 
 	printf("\nEnter a command: ");
 
 	get_args(args);
+
+
+/* to avoid if-else if-else block:
+
+struct {
+	char command[12];
+	function pointer
+}
+
+ * Need to standardize function prototype
+
+ cmd(args[4][16], **memstart, **memend, *alloc_status)
+
+ * Create array of structs to iterate through:
+
+for (i in array of structs) {
+	if (strcmp) -> call
+}
+
+printf("error, unrecognized")
+
+ */
+
 
 	/* handle command */
 	if (0 == strcmp(args[0], "help"))
@@ -109,11 +135,11 @@ int handle_selection(void)
 	}
 	else if (0 == strcmp(args[0], "pattern"))
 	{
-		write_pattern();
+		write_pattern(&mem_start, &mem_end, &alloc_status, args[1], args[2], args[3], &seed);
 	}
 	else if (0 == strcmp(args[0], "verify"))
 	{
-		verify_pattern();
+		verify_pattern(&mem_start, &mem_end, &alloc_status, args[1], args[2], &seed);
 	}
 	else if (0 == strcmp(args[0], "exit"))
 	{
