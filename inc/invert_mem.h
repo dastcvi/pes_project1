@@ -8,6 +8,9 @@
 #ifndef __INVERT_MEM_H_
 #define __INVERT_MEM_H_
 
-void invert_mem(void);
+#include <stdbool.h>
+#include <stdint.h>
+
+void invert_mem(uint32_t ** start_mem, uint32_t ** end_mem, const bool * alloc_status, const char address_arg[16], const char value_arg[16]);
 
 #endif /* __INVERT_MEM_H_ */

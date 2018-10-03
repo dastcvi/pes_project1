@@ -8,6 +8,9 @@
 #ifndef __FREE_MEM_H_
 #define __FREE_MEM_H_
 
-void free_mem(void);
+#include <stdbool.h>
+#include <stdint.h>
+
+void free_mem(uint32_t ** mem_pointer, bool * alloc_status);
 
 #endif /* __FREE_MEM_H_ */

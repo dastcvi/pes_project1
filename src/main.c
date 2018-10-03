@@ -8,6 +8,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 #include "../inc/alloc_mem.h"
 #include "../inc/display_mem.h"
 #include "../inc/free_mem.h"
@@ -17,6 +18,19 @@
 #include "../inc/write_mem.h"
 #include "../inc/write_pattern.h"
 
+/* pointer to the first valid uint32_t address */
+uint32_t * mem_start = NULL;
+
+/* pointer to the last valid uint32_t address */
+uint32_t * mem_end = NULL;
+
+/* shows whether memory is currently allocated or not */
+bool alloc_status = false;
+
+/* stores the current seed in memory */
+uint32_t seed = 0;
+
+/* show a welcome message */
 void print_welcome(void)
 {
 	printf("\n----------------------------------------------------\n");
@@ -27,14 +41,12 @@ void print_welcome(void)
 	printf("----------------------------------------------------\n\n");
 }
 
-int handle_selection(void)
+/* read up to three arguments from the command line into the argument buffer */
+void get_args(char args[4][16])
 {
-	char args[3][16] = {0};
 	char new_char = 0;
 	uint8_t arg_num = 0;
 	uint8_t char_num = 0;
-
-	printf("\nEnter a command: ");
 
 	/* read up to three arguments from the command line */
 	while ('\n' != (new_char = getchar()))
@@ -44,8 +56,8 @@ int handle_selection(void)
 		{
 			char_num = 0;
 
-			/* ensure there aren't more than three arguments */
-			if (++arg_num == 3) break;
+			/* don't handle arguments past four */
+			if (++arg_num == 4) break;
 		}
 		else
 		{
@@ -58,15 +70,53 @@ int handle_selection(void)
 	}
 	
 	/* clear stdin */
-	while (new_char != '\n')
-	{
-		new_char = getchar();
-	}
+	// while (new_char != '\n')
+	// {
+	// 	new_char = getchar();
+	// }
+}
+
+/* wait for and handle user input */
+int handle_selection(void)
+{
+	char args[4][16] = {0};
+
+	printf("\nEnter a command: ");
+
+	get_args(args);
 
 	/* handle command */
 	if (0 == strcmp(args[0], "help"))
 	{
 		help_mem();
+	}
+	else if (0 == strcmp(args[0], "alloc"))
+	{
+		alloc_mem(&mem_start, &mem_end, &alloc_status, args[1]);
+	}
+	else if (0 == strcmp(args[0], "free"))
+	{
+		free_mem(&mem_start, &alloc_status);
+	}
+	else if (0 == strcmp(args[0], "display"))
+	{
+		display_mem(&mem_start, args[1], args[2]);
+	}
+	else if (0 == strcmp(args[0], "write"))
+	{
+		write_mem(&mem_start, &mem_end, &alloc_status, args[1], args[2]);
+	}
+	else if (0 == strcmp(args[0], "invert"))
+	{
+		invert_mem(&mem_start, &mem_end, &alloc_status, args[1], args[2]);
+	}
+	else if (0 == strcmp(args[0], "pattern"))
+	{
+		write_pattern(&mem_start, &mem_end, &alloc_status, args[1], args[2], args[3], &seed);
+	}
+	else if (0 == strcmp(args[0], "verify"))
+	{
+		verify_pattern(&mem_start, &mem_end, &alloc_status, args[1], args[2], &seed);
 	}
 	else if (0 == strcmp(args[0], "exit"))
 	{
