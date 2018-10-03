@@ -13,18 +13,21 @@ void free_mem(uint32_t ** mem_pointer, bool * alloc_status)
 {
 	long unsigned int address = 0;
 
+	/* ensure that memory has been allocated */
 	if (!*alloc_status)
 	{
 		printf("No allocated memory to free\n");
 		return;
 	}
 
+	/* ensure that we don't have a null pointer */
 	if (*mem_pointer == NULL)
 	{
 		printf("Error: NULL global memory pointer\n");
 		return;
 	}
 
+	/* deallocate the memory */
 	address = (long unsigned int) *mem_pointer;
 	free(*mem_pointer);
 	*alloc_status = false;

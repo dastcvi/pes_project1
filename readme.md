@@ -12,8 +12,18 @@ This is a repository for the first project in CU Boulder Engineering's ECEN 5813
 Completed:
 * General file structure
 * Makefile
-* Help command
+* Test script
+* Alloc command
+* Display command
 * Exit command
+* Help command
+* Invert command
+* Verify pattern command
+* Write command
+* Write pattern command
+
+Future work:
+* Implementing a function pointer lookup table for commands to avoid giant if-else chain
 
 ## Instructions
 

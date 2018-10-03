@@ -28,52 +28,61 @@ void write_pattern(uint32_t ** start_mem, uint32_t ** end_mem, const bool * allo
 	uint32_t * mem_pointer = NULL;
 	uint32_t num_words = 0;
 
+	/* ensure that memory has been allocated */
 	if (!*alloc_status)
 	{
 		printf("Allocate the memory first\n");
 		return;
 	}
 
+	/* read the first argument (address) */
 	if (1 != sscanf(address_arg, "%lx", &address))
 	{
 		printf("Invalid start address: %s\n", address_arg);
 		return;
 	}
 
+	/* check for the magic address */
 	if (address == 0xffffffff) {
 		address = (unsigned long int) *start_mem;
 	}
 
+	/* ensure the address is within the allocated region */
 	if (address < (long unsigned int) *start_mem || address > (long unsigned int) *end_mem)
 	{
 		printf("The start address must be within %#lx - %#lx\n", (long unsigned int) *start_mem, (long unsigned int) *end_mem);
 		return;
 	}
 
+	/* ensure a word-aligned address */
 	if ((address - (long unsigned int) *start_mem) % 4 != 0)
 	{
 		printf("The start address must be word-aligned\n");
 		return;
 	}
 
+	/* read the second argument (number of words to pattern) */
 	if (1 != sscanf(num_words_arg, "%u", &num_words))
 	{
 		printf("Invalid number of words: %s\n", num_words_arg);
 		return;
 	}
 
+	/* ensure we won't overflow */
 	if (((unsigned long int) (*start_mem) + (num_words - 1) * 4) > (unsigned long int) (*end_mem))
 	{
 		printf("Invert range extends beyond allocated memory\n");
 		return;
 	}
 
+	/* read the third argument (seed) */
 	if (1 != sscanf(seed_arg, "%u", seed))
 	{
 		printf("Invalid seed: %s\n", seed_arg);
 		return;
 	}
 
+	/* cast the addres to the pointer */
 	mem_pointer = (uint32_t *) address;
 
 	uint32_t itr = 0;
@@ -82,6 +91,7 @@ void write_pattern(uint32_t ** start_mem, uint32_t ** end_mem, const bool * allo
 	struct timeval start, end;
 	gettimeofday(&start,NULL);
 
+	/* perform the pattern write */
 	uint32_t gen_num = get_next_prng(*seed);
 	for (itr = 0; itr < num_words; itr++)
 	{
@@ -89,6 +99,7 @@ void write_pattern(uint32_t ** start_mem, uint32_t ** end_mem, const bool * allo
 		gen_num = get_next_prng(gen_num);
 	}
 
+	/* note end time */
 	gettimeofday(&end,NULL);
 	unsigned long int micros_elapsed = 1000000 * end.tv_sec + end.tv_usec - (1000000 * start.tv_sec + start.tv_usec);
 

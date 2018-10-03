@@ -13,27 +13,32 @@ void alloc_mem(uint32_t ** mem_start, uint32_t ** mem_end, bool * alloc_status, 
 {
 	int alloc_size = 0;
 
+	/* check if memory has already been allocated */
 	if (*alloc_status)
 	{
 		printf("Memory already allocated\n");
 		return;
 	}
 
+	/* read the first argument (allocation size) */
 	if (1 != sscanf(num_words, "%d", &alloc_size))
 	{
 		printf("Invalid number of words to allocate: %s\n", num_words);
 		return;
 	}
 	
+	/* verify that the address is within bounds */
 	if (1 > alloc_size || MAX_ALLOC_WORDS < alloc_size)
 	{
 		printf("Alloc size must be between 1 and %d words\n", MAX_ALLOC_WORDS);
 		return;
 	}
 
+	/* perform the allocation, and note the start and end word pointers */
 	*mem_start = (uint32_t *) malloc(alloc_size*4);
 	*mem_end = &((*mem_start)[alloc_size-1]);
 
+	/* verify the allocation */
 	if (*mem_start != NULL)
 	{
 		*alloc_status = true;
