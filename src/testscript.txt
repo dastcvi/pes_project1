@@ -1,3 +1,11 @@
+help 
 alloc 4
-free
-exit
+display 0xffffffff 4
+pattern 0xffffffff 4 1
+verify 0xffffffff 4
+invert 0xffffffff 4
+verify 0xffffffff 4
+write 0xffffffff 0
+display 0xffffffff 4
+free 
+exit 

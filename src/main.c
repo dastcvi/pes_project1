@@ -70,10 +70,10 @@ void get_args(char args[4][16])
 	}
 	
 	/* clear stdin */
-	// while (new_char != '\n')
-	// {
-	// 	new_char = getchar();
-	// }
+	while (new_char != '\n')
+	{
+		new_char = getchar();
+	}
 }
 
 /* wait for and handle user input */
