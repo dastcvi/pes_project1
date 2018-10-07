@@ -18,6 +18,15 @@
 #include "../inc/write_mem.h"
 #include "../inc/write_pattern.h"
 
+#define NUM_COMMANDS	7
+
+/* struct type for command lookup table */
+typedef struct command_struct
+{
+	char command[16];
+	void (*cmd_function)(char args[4][16], uint32_t ** mem_start, uint32_t ** mem_end, uint32_t * seed, bool * alloc_status);
+} command_t;
+
 /* pointer to the first valid uint32_t address */
 uint32_t * mem_start = NULL;
 
@@ -29,6 +38,17 @@ bool alloc_status = false;
 
 /* stores the current seed in memory */
 uint32_t seed = 0;
+
+/* command table */
+command_t commands[NUM_COMMANDS] = {
+	{"alloc",    &alloc_mem},
+	{"free",     &free_mem},
+	{"display",  &display_mem},
+	{"write",    &write_mem},
+	{"invert",   &invert_mem},
+	{"pattern",  &write_pattern},
+	{"verify",   &verify_pattern}
+};
 
 /* show a welcome message */
 void print_welcome(void)
@@ -80,52 +100,37 @@ void get_args(char args[4][16])
 int handle_selection(void)
 {
 	char args[4][16] = {0};
+	uint8_t itr = 0;
 
 	printf("\nEnter a command: ");
 
 	get_args(args);
 
-	/* handle command */
-	if (0 == strcmp(args[0], "help"))
+	for (itr = 0; itr < NUM_COMMANDS; itr++)
 	{
-		help_mem();
+		if (0 == strcmp(args[0], commands[itr].command))
+		{
+			/* call the command on a match */
+			commands[itr].cmd_function(args, &mem_start, &mem_end, &seed, &alloc_status);
+			return 1;
+		}
 	}
-	else if (0 == strcmp(args[0], "alloc"))
-	{
-		alloc_mem(&mem_start, &mem_end, &alloc_status, args[1]);
-	}
-	else if (0 == strcmp(args[0], "free"))
-	{
-		free_mem(&mem_start, &alloc_status);
-	}
-	else if (0 == strcmp(args[0], "display"))
-	{
-		display_mem(&mem_start, args[1], args[2]);
-	}
-	else if (0 == strcmp(args[0], "write"))
-	{
-		write_mem(&mem_start, &mem_end, &alloc_status, args[1], args[2]);
-	}
-	else if (0 == strcmp(args[0], "invert"))
-	{
-		invert_mem(&mem_start, &mem_end, &alloc_status, args[1], args[2]);
-	}
-	else if (0 == strcmp(args[0], "pattern"))
-	{
-		write_pattern(&mem_start, &mem_end, &alloc_status, args[1], args[2], args[3], &seed);
-	}
-	else if (0 == strcmp(args[0], "verify"))
-	{
-		verify_pattern(&mem_start, &mem_end, &alloc_status, args[1], args[2], &seed);
-	}
-	else if (0 == strcmp(args[0], "exit"))
+
+	/* check for the exit/help commands, otherwise print an error */
+	if (0 == strcmp(args[0], "exit"))
 	{
 		printf("\nThank you\n\n");
 		return 0;
 	}
-	else
+	else if (0 == strcmp(args[0], "help"))
+	{
+		help_mem();
+		return 1;
+	} 
+	else 
 	{
 		printf("Unknown command \"%s\": try \"help\" for a command directory\n", args[0]);
+		return 1;
 	}
 
 	return 1;

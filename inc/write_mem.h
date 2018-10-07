@@ -11,6 +11,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-void write_mem(uint32_t ** start_mem, uint32_t ** end_mem, const bool * alloc_status, const char address_arg[16], const char value_arg[16]);
+void write_mem(char args[4][16], uint32_t ** mem_start, uint32_t ** mem_end, uint32_t * seed, bool * alloc_status);
 
 #endif /* __WRITE_MEM_H_ */

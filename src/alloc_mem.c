@@ -9,9 +9,12 @@
 #include <stdlib.h>
 #include "../inc/alloc_mem.h"
 
-void alloc_mem(uint32_t ** mem_start, uint32_t ** mem_end, bool * alloc_status, const char num_words[16])
+void alloc_mem(char args[4][16], uint32_t ** mem_start, uint32_t ** mem_end, uint32_t * seed, bool * alloc_status)
 {
 	int alloc_size = 0;
+	
+	/* avoid unused parameter warnings caused by needing standard function prototype */
+	(void)(seed);
 
 	/* check if memory has already been allocated */
 	if (*alloc_status)
@@ -21,9 +24,9 @@ void alloc_mem(uint32_t ** mem_start, uint32_t ** mem_end, bool * alloc_status, 
 	}
 
 	/* read the first argument (allocation size) */
-	if (1 != sscanf(num_words, "%d", &alloc_size))
+	if (1 != sscanf(args[1], "%d", &alloc_size))
 	{
-		printf("Invalid number of words to allocate: %s\n", num_words);
+		printf("Invalid number of words to allocate: %s\n", args[1]);
 		return;
 	}
 	

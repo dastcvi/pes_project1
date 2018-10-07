@@ -22,7 +22,7 @@ uint32_t get_next_prng(uint32_t current)
 	return (uint32_t) (result & 0xffffffff);
 }
 
-void write_pattern(uint32_t ** start_mem, uint32_t ** end_mem, const bool * alloc_status, const char address_arg[16], const char num_words_arg[16], const char seed_arg[16], uint32_t * seed)
+void write_pattern(char args[4][16], uint32_t ** mem_start, uint32_t ** mem_end, uint32_t * seed, bool * alloc_status)
 {
 	long unsigned int address = 0;
 	uint32_t * mem_pointer = NULL;
@@ -36,49 +36,49 @@ void write_pattern(uint32_t ** start_mem, uint32_t ** end_mem, const bool * allo
 	}
 
 	/* read the first argument (address) */
-	if (1 != sscanf(address_arg, "%lx", &address))
+	if (1 != sscanf(args[1], "%lx", &address))
 	{
-		printf("Invalid start address: %s\n", address_arg);
+		printf("Invalid start address: %s\n", args[1]);
 		return;
 	}
 
 	/* check for the magic address */
 	if (address == 0xffffffff) {
-		address = (unsigned long int) *start_mem;
+		address = (unsigned long int) *mem_start;
 	}
 
 	/* ensure the address is within the allocated region */
-	if (address < (long unsigned int) *start_mem || address > (long unsigned int) *end_mem)
+	if (address < (long unsigned int) *mem_start || address > (long unsigned int) *mem_end)
 	{
-		printf("The start address must be within %#lx - %#lx\n", (long unsigned int) *start_mem, (long unsigned int) *end_mem);
+		printf("The start address must be within %#lx - %#lx\n", (long unsigned int) *mem_start, (long unsigned int) *mem_end);
 		return;
 	}
 
 	/* ensure a word-aligned address */
-	if ((address - (long unsigned int) *start_mem) % 4 != 0)
+	if ((address - (long unsigned int) *mem_start) % 4 != 0)
 	{
 		printf("The start address must be word-aligned\n");
 		return;
 	}
 
 	/* read the second argument (number of words to pattern) */
-	if (1 != sscanf(num_words_arg, "%u", &num_words))
+	if (1 != sscanf(args[2], "%u", &num_words))
 	{
-		printf("Invalid number of words: %s\n", num_words_arg);
+		printf("Invalid number of words: %s\n", args[2]);
 		return;
 	}
 
 	/* ensure we won't overflow */
-	if (((unsigned long int) (*start_mem) + (num_words - 1) * 4) > (unsigned long int) (*end_mem))
+	if (((unsigned long int) (*mem_start) + (num_words - 1) * 4) > (unsigned long int) (*mem_end))
 	{
 		printf("Invert range extends beyond allocated memory\n");
 		return;
 	}
 
 	/* read the third argument (seed) */
-	if (1 != sscanf(seed_arg, "%u", seed))
+	if (1 != sscanf(args[3], "%u", seed))
 	{
-		printf("Invalid seed: %s\n", seed_arg);
+		printf("Invalid seed: %s\n", args[3]);
 		return;
 	}
 

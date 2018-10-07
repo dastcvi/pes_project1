@@ -9,9 +9,10 @@
 #define __DISPLAY_MEM_H_
 
 #include <stdint.h>
+#include <stdbool.h>
 
 #define MAX_DISPLAY_WORDS	1048576
 
-void display_mem(uint32_t ** start_mem, const char address_arg[16], const char num_words_arg[16]);
+void display_mem(char args[4][16], uint32_t ** mem_start, uint32_t ** mem_end, uint32_t * seed, bool * alloc_status);
 
 #endif /* __DISPLAY_MEM_H_ */

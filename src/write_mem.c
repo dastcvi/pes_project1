@@ -8,11 +8,14 @@
 #include <stdio.h>
 #include "../inc/write_mem.h"
 
-void write_mem(uint32_t ** start_mem, uint32_t ** end_mem, const bool * alloc_status, const char address_arg[16], const char value_arg[16])
+void write_mem(char args[4][16], uint32_t ** mem_start, uint32_t ** mem_end, uint32_t * seed, bool * alloc_status)
 {
 	long unsigned int address = 0;
 	uint32_t * mem_pointer = NULL;
 	uint32_t value = 0;
+
+	/* avoid unused parameter warnings caused by needing standard function prototype */
+	(void)(seed);
 
 	/* ensure that memory has been allocated */
 	if (!*alloc_status)
@@ -22,26 +25,26 @@ void write_mem(uint32_t ** start_mem, uint32_t ** end_mem, const bool * alloc_st
 	}
 
 	/* read the first argument (address) */
-	if (1 != sscanf(address_arg, "%lx", &address))
+	if (1 != sscanf(args[1], "%lx", &address))
 	{
-		printf("Invalid write address: %s\n", address_arg);
+		printf("Invalid write address: %s\n", args[1]);
 		return;
 	}
 
 	/* check if it's the magic address */
 	if (address == 0xffffffff) {
-		address = (unsigned long int) *start_mem;
+		address = (unsigned long int) *mem_start;
 	}
 	
 	/* ensure that the address is within range */
-	if (address < (long unsigned int) *start_mem || address > (long unsigned int) *end_mem)
+	if (address < (long unsigned int) *mem_start || address > (long unsigned int) *mem_end)
 	{
-		printf("The write address must be within %#lx - %#lx\n", (long unsigned int) *start_mem, (long unsigned int) *end_mem);
+		printf("The write address must be within %#lx - %#lx\n", (long unsigned int) *mem_start, (long unsigned int) *mem_end);
 		return;
 	}
 
 	/* ensure a word-aligned address */
-	if ((address - (long unsigned int) *start_mem) % 4 != 0)
+	if ((address - (long unsigned int) *mem_start) % 4 != 0)
 	{
 		printf("The address must be word-aligned\n");
 		return;
@@ -50,9 +53,9 @@ void write_mem(uint32_t ** start_mem, uint32_t ** end_mem, const bool * alloc_st
 	mem_pointer = (uint32_t *) address;
 
 	/* read the second argument (value) */
-	if (1 != sscanf(value_arg, "%x", &value))
+	if (1 != sscanf(args[2], "%x", &value))
 	{
-		printf("Invalid value: %s\n", value_arg);
+		printf("Invalid value: %s\n", args[2]);
 		return;
 	}
 

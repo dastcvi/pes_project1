@@ -11,6 +11,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-void free_mem(uint32_t ** mem_pointer, bool * alloc_status);
+void free_mem(char args[4][16], uint32_t ** mem_start, uint32_t ** mem_end, uint32_t * seed, bool * alloc_status);
 
 #endif /* __FREE_MEM_H_ */
